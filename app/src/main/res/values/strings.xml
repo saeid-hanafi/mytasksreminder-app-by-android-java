@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">To Do List</string>
+    <string name="add_new_task">Add New Tack</string>
+    <string name="edit_task">Edit Task</string>
+    <string name="search_hint">Search</string>
+    <string name="add_btn">Add</string>
+</resources>

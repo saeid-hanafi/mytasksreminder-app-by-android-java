@@ -33,7 +33,7 @@ public class MainActivity extends AppCompatActivity implements DialogItem.addNew
         fabAddTask.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                DialogItem dialogItem = new DialogItem();
+                DialogItem dialogItem = new DialogItem(false);
                 dialogItem.show(getSupportFragmentManager(), null);
             }
         });
@@ -57,10 +57,27 @@ public class MainActivity extends AppCompatActivity implements DialogItem.addNew
     }
 
     @Override
+    public void editTaskSuccess(Task task) {
+        int result = sqLiteHelper.updateTask(task);
+        if (result > 0) {
+            taskAdapter.updateTask(task);
+        }
+    }
+
+    @Override
     public void deleteTaskByID(Task task) {
         int result = sqLiteHelper.deleteTask(task);
         if (result > 0) {
             taskAdapter.deleteTask(task);
         }
+    }
+
+    @Override
+    public void editTask(Task task) {
+        DialogItem dialogItem = new DialogItem(true);
+        Bundle bundle = new Bundle();
+        bundle.putParcelable("task", task);
+        dialogItem.setArguments(bundle);
+        dialogItem.show(getSupportFragmentManager(), null);
     }
 }

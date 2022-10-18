@@ -60,6 +60,16 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TackViewHolder
         notifyDataSetChanged();
     }
 
+    public void updateTask(Task task) {
+        for (int i = 0; i < tasks.size(); i++) {
+            if (tasks.get(i).getId() == task.getId()) {
+                tasks.set(i, task);
+                notifyItemChanged(i);
+                break;
+            }
+        }
+    }
+
     @Override
     public int getItemCount() {
         return tasks.size();
@@ -86,10 +96,19 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TackViewHolder
                     eventListener.deleteTaskByID(task);
                 }
             });
+
+            itemView.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View v) {
+                    eventListener.editTask(task);
+                    return false;
+                }
+            });
         }
     }
 
     public interface taskAdapterEventListener {
         void deleteTaskByID(Task task);
+        void editTask(Task task);
     }
 }

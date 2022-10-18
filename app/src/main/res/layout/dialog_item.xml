@@ -11,6 +11,7 @@
     android:layout_marginHorizontal="12dp">
 
     <TextView
+        android:id="@+id/task_dialog_main_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/add_new_task"
@@ -23,6 +24,7 @@
         android:textSize="20dp"/>
 
     <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/task_input_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"

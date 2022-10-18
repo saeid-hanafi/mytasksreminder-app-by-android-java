@@ -6,22 +6,34 @@ import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 
+import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputEditText;
+import com.google.android.material.textfield.TextInputLayout;
 
 import java.util.Objects;
 
 public class DialogItem extends DialogFragment {
     private addNewDialogCallBack callBack;
+    private boolean isEdit;
+    private Task task;
+
+    public DialogItem(boolean isEdit) {
+        this.isEdit = isEdit;
+    }
 
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
         callBack= (addNewDialogCallBack) context;
+        if (isEdit && getArguments() != null) {
+            task = getArguments().getParcelable("task");
+        }
     }
 
     @NonNull
@@ -31,22 +43,59 @@ public class DialogItem extends DialogFragment {
         View view = LayoutInflater.from(getContext()).inflate(R.layout.dialog_item, null, false);
         builder.setView(view);
 
-        final TextInputEditText taskTitle = view.findViewById(R.id.add_new_task_text);
-        View addNewBtn = view.findViewById(R.id.add_new_task_btn);
-        addNewBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Task task = new Task();
-                task.setTitle(Objects.requireNonNull(taskTitle.getText()).toString());
-                task.setCompleted(false);
-                callBack.addNewTaskSuccess(task);
+        TextInputLayout taskInput = view.findViewById(R.id.task_input_layout);
+        TextInputEditText taskTitle = view.findViewById(R.id.add_new_task_text);
+        MaterialButton addNewBtn = view.findViewById(R.id.add_new_task_btn);
+
+        if (isEdit) {
+            String oldTitle = task.getTitle();
+            if (oldTitle != null) {
+                taskTitle.setText(oldTitle);
+                TextView dialogMainTitle = view.findViewById(R.id.task_dialog_main_title);
+                dialogMainTitle.setText(R.string.edit_task);
+                addNewBtn.setText(R.string.edit_btn);
+
+                addNewBtn.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if (taskTitle.length() > 0) {
+                            String newTitle = Objects.requireNonNull(taskTitle.getText()).toString();
+                            if (newTitle.equalsIgnoreCase(oldTitle)) {
+                                dismiss();
+                            }else{
+                                task.setTitle(newTitle);
+                                callBack.editTaskSuccess(task);
+                                dismiss();
+                            }
+                        }else{
+                            taskInput.setError("Title is empty!");
+                        }
+                    }
+                });
+            }else{
                 dismiss();
             }
-        });
+        }else{
+            addNewBtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (taskTitle.length() > 0) {
+                        Task task = new Task();
+                        task.setTitle(Objects.requireNonNull(taskTitle.getText()).toString());
+                        task.setCompleted(false);
+                        callBack.addNewTaskSuccess(task);
+                        dismiss();
+                    }else{
+                        taskInput.setError("Title is empty!");
+                    }
+                }
+            });
+        }
         return builder.create();
     }
 
     public interface addNewDialogCallBack {
         void addNewTaskSuccess(Task task);
+        void editTaskSuccess(Task task);
     }
 }

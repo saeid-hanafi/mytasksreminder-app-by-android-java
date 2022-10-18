@@ -95,4 +95,15 @@ public class SQLiteHelper extends SQLiteOpenHelper {
             Log.e(TAG, "deleteAllTasks: Error On Delete All Tasks!");
         }
     }
+
+    public int updateTask(Task newTask) {
+        newTask.setLast_update(this.getCurrentTimestamp());
+        SQLiteDatabase sqLiteDatabase = getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put("title", newTask.getTitle());
+        contentValues.put("last_update", newTask.getLast_update());
+        int result = sqLiteDatabase.update(TASK_TABLE, contentValues, "id = ?", new String[] {String.valueOf(newTask.getId())});
+        sqLiteDatabase.close();
+        return result;
+    }
 }

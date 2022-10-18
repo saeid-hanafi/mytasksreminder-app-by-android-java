@@ -30,12 +30,14 @@
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
 
         <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/add_new_task_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
 
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.button.MaterialButton
+        android:id="@+id/add_new_task_btn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/add_btn"

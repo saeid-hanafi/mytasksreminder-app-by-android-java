@@ -4,4 +4,5 @@
     <string name="edit_task">Edit Task</string>
     <string name="search_hint">Search</string>
     <string name="add_btn">Add</string>
+    <string name="remove_all">Remove All</string>
 </resources>

@@ -7,6 +7,7 @@ public class Task implements Parcelable {
     private int id;
     private String title;
     private boolean isCompleted;
+    private String last_update;
 
     public int getId() {
         return id;
@@ -32,6 +33,14 @@ public class Task implements Parcelable {
         isCompleted = completed;
     }
 
+    public String getLast_update() {
+        return last_update;
+    }
+
+    public void setLast_update(String last_update) {
+        this.last_update = last_update;
+    }
+
 
     @Override
     public int describeContents() {
@@ -43,12 +52,14 @@ public class Task implements Parcelable {
         dest.writeInt(this.id);
         dest.writeString(this.title);
         dest.writeByte(this.isCompleted ? (byte) 1 : (byte) 0);
+        dest.writeString(this.last_update);
     }
 
     public void readFromParcel(Parcel source) {
         this.id = source.readInt();
         this.title = source.readString();
         this.isCompleted = source.readByte() != 0;
+        this.last_update = source.readString();
     }
 
     public Task() {
@@ -58,6 +69,7 @@ public class Task implements Parcelable {
         this.id = in.readInt();
         this.title = in.readString();
         this.isCompleted = in.readByte() != 0;
+        this.last_update = in.readString();
     }
 
     public static final Parcelable.Creator<Task> CREATOR = new Parcelable.Creator<Task>() {

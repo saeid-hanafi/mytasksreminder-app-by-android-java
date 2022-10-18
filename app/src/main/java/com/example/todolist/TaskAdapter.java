@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -67,15 +68,18 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TackViewHolder
     public class TackViewHolder extends RecyclerView.ViewHolder {
         private CheckBox checkBox;
         private ImageView deleteIcon;
+        private TextView lastUpdate;
 
         public TackViewHolder(@NonNull View itemView) {
             super(itemView);
             checkBox = itemView.findViewById(R.id.cb_task);
             deleteIcon = itemView.findViewById(R.id.iv_delete_icon);
+            lastUpdate = itemView.findViewById(R.id.tv_last_timestamp);
         }
 
         public void bindContent(Task task) {
             checkBox.setText(task.getTitle());
+            lastUpdate.setText(task.getLast_update());
             deleteIcon.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

@@ -11,7 +11,9 @@ import android.util.Log;
 
 import androidx.annotation.Nullable;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 public class SQLiteHelper extends SQLiteOpenHelper {
@@ -19,7 +21,7 @@ public class SQLiteHelper extends SQLiteOpenHelper {
     private static final String TAG = "SQLiteHelper";
 
     public SQLiteHelper(@Nullable Context context) {
-        super(context, "db_tasks", null, 1);
+        super(context, "db_tasks", null, 2);
     }
 
     @Override
@@ -35,7 +37,13 @@ public class SQLiteHelper extends SQLiteOpenHelper {
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         if (oldVersion == 1 && newVersion > 1) {
             db.execSQL("PRAGMA encoding = 'utf-8'");
+            db.execSQL("ALTER TABLE "+TASK_TABLE+" ADD COLUMN `last_update` TIMESTAMP");
         }
+    }
+
+    @SuppressLint("SimpleDateFormat")
+    public String getCurrentTimestamp() {
+        return new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(Calendar.getInstance().getTime());
     }
 
     public long addNewTask(Task task) {
@@ -44,6 +52,8 @@ public class SQLiteHelper extends SQLiteOpenHelper {
         String x = task.getTitle();
         contentValues.put("title", task.getTitle());
         contentValues.put("completed", task.isCompleted());
+        String nowTimestamp = this.getCurrentTimestamp();
+        contentValues.put("last_update", nowTimestamp);
         long result = sqLiteDatabase.insert(TASK_TABLE, null, contentValues);
         sqLiteDatabase.close();
         return result;
@@ -60,6 +70,7 @@ public class SQLiteHelper extends SQLiteOpenHelper {
                 task.setId(result.getInt(0));
                 task.setTitle(result.getString(1));
                 task.setCompleted(result.getInt(2) == 1);
+                task.setLast_update(result.getString(3));
                 tasks.add(task);
             }while (result.moveToNext());
         }

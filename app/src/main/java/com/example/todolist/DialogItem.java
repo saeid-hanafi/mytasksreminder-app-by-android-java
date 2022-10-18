@@ -1,5 +1,6 @@
 package com.example.todolist;
 
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
@@ -16,6 +17,8 @@ import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Objects;
 
 public class DialogItem extends DialogFragment {
@@ -64,6 +67,7 @@ public class DialogItem extends DialogFragment {
                                 dismiss();
                             }else{
                                 task.setTitle(newTitle);
+                                task.setLast_update(DialogItem.this.getCurrentTimestamp());
                                 callBack.editTaskSuccess(task);
                                 dismiss();
                             }
@@ -83,6 +87,7 @@ public class DialogItem extends DialogFragment {
                         Task task = new Task();
                         task.setTitle(Objects.requireNonNull(taskTitle.getText()).toString());
                         task.setCompleted(false);
+                        task.setLast_update(DialogItem.this.getCurrentTimestamp());
                         callBack.addNewTaskSuccess(task);
                         dismiss();
                     }else{
@@ -92,6 +97,11 @@ public class DialogItem extends DialogFragment {
             });
         }
         return builder.create();
+    }
+
+    @SuppressLint("SimpleDateFormat")
+    public String getCurrentTimestamp() {
+        return new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(Calendar.getInstance().getTime());
     }
 
     public interface addNewDialogCallBack {

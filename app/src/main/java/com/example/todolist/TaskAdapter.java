@@ -65,7 +65,6 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TackViewHolder
             if (tasks.get(i).getId() == task.getId()) {
                 tasks.set(i, task);
                 notifyItemChanged(i);
-                break;
             }
         }
     }

@@ -41,28 +41,28 @@ public class SQLiteHelper extends SQLiteOpenHelper {
         }
     }
 
-    @SuppressLint("SimpleDateFormat")
-    public String getCurrentTimestamp() {
-        return new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(Calendar.getInstance().getTime());
-    }
-
-    public long addNewTask(Task task) {
+    public Task addNewTask(Task task) {
         SQLiteDatabase sqLiteDatabase = getWritableDatabase();
         ContentValues contentValues = new ContentValues();
-        String x = task.getTitle();
         contentValues.put("title", task.getTitle());
         contentValues.put("completed", task.isCompleted());
-        String nowTimestamp = this.getCurrentTimestamp();
-        contentValues.put("last_update", nowTimestamp);
+        contentValues.put("last_update", task.getLast_update());
         long result = sqLiteDatabase.insert(TASK_TABLE, null, contentValues);
         sqLiteDatabase.close();
-        return result;
+        if (result > 0) {
+            task.setId((int) result);
+            return task;
+        }else {
+            Task emptyTask = new Task();
+            emptyTask.setId(0);
+            return emptyTask;
+        }
     }
 
     @SuppressLint("Recycle")
     public List<Task> getAllTasks() {
         SQLiteDatabase sqLiteDatabase = getReadableDatabase();
-        Cursor result = sqLiteDatabase.rawQuery("SELECT * FROM "+ TASK_TABLE + " WHERE 1 ORDER BY `id` DESC", null);
+        Cursor result = sqLiteDatabase.rawQuery("SELECT * FROM "+ TASK_TABLE + " WHERE 1 ORDER BY `last_update` DESC", null);
         List<Task> tasks = new ArrayList<>();
         if (result.moveToFirst()) {
             do {
@@ -97,7 +97,6 @@ public class SQLiteHelper extends SQLiteOpenHelper {
     }
 
     public int updateTask(Task newTask) {
-        newTask.setLast_update(this.getCurrentTimestamp());
         SQLiteDatabase sqLiteDatabase = getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.put("title", newTask.getTitle());

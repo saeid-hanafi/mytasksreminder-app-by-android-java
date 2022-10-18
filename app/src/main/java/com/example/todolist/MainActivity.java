@@ -12,6 +12,7 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity implements DialogItem.addNewDialogCallBack, TaskAdapter.taskAdapterEventListener {
     private TaskAdapter taskAdapter;
     private SQLiteHelper sqLiteHelper;
+    private RecyclerView recyclerView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -20,7 +21,7 @@ public class MainActivity extends AppCompatActivity implements DialogItem.addNew
         taskAdapter = new TaskAdapter(MainActivity.this);
         sqLiteHelper = new SQLiteHelper(this);
 
-        RecyclerView recyclerView = findViewById(R.id.rv_main);
+        recyclerView = findViewById(R.id.rv_main);
         recyclerView.setLayoutManager(new LinearLayoutManager(MainActivity.this, RecyclerView.VERTICAL, false));
         recyclerView.setAdapter(taskAdapter);
 
@@ -50,9 +51,10 @@ public class MainActivity extends AppCompatActivity implements DialogItem.addNew
 
     @Override
     public void addNewTaskSuccess(Task task) {
-        long result = sqLiteHelper.addNewTask(task);
-        if (result != -1) {
-            taskAdapter.addNewTask(task);
+        Task result = sqLiteHelper.addNewTask(task);
+        if (result.getId() > 0) {
+            taskAdapter.addNewTask(result);
+            recyclerView.smoothScrollToPosition(0);
         }
     }
 

@@ -9,7 +9,7 @@ import android.view.View;
 
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity implements DialogItem.addNewDialogCallBack {
+public class MainActivity extends AppCompatActivity implements DialogItem.addNewDialogCallBack, TaskAdapter.taskAdapterEventListener {
     private TaskAdapter taskAdapter;
     private SQLiteHelper sqLiteHelper;
 
@@ -17,7 +17,7 @@ public class MainActivity extends AppCompatActivity implements DialogItem.addNew
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        taskAdapter = new TaskAdapter();
+        taskAdapter = new TaskAdapter(MainActivity.this);
         sqLiteHelper = new SQLiteHelper(this);
 
         RecyclerView recyclerView = findViewById(R.id.rv_main);
@@ -37,6 +37,15 @@ public class MainActivity extends AppCompatActivity implements DialogItem.addNew
                 dialogItem.show(getSupportFragmentManager(), null);
             }
         });
+
+        View deleteAllTasksBtn = findViewById(R.id.remove_all_tasks_btn);
+        deleteAllTasksBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                sqLiteHelper.deleteAllTasks();
+                taskAdapter.deleteAllTasks();
+            }
+        });
     }
 
     @Override
@@ -44,6 +53,14 @@ public class MainActivity extends AppCompatActivity implements DialogItem.addNew
         long result = sqLiteHelper.addNewTask(task);
         if (result != -1) {
             taskAdapter.addNewTask(task);
+        }
+    }
+
+    @Override
+    public void deleteTaskByID(Task task) {
+        int result = sqLiteHelper.deleteTask(task);
+        if (result > 0) {
+            taskAdapter.deleteTask(task);
         }
     }
 }

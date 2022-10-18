@@ -33,12 +33,15 @@ public class SQLiteHelper extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-
+        if (oldVersion == 1 && newVersion > 1) {
+            db.execSQL("PRAGMA encoding = 'utf-8'");
+        }
     }
 
     public long addNewTask(Task task) {
         SQLiteDatabase sqLiteDatabase = getWritableDatabase();
         ContentValues contentValues = new ContentValues();
+        String x = task.getTitle();
         contentValues.put("title", task.getTitle());
         contentValues.put("completed", task.isCompleted());
         long result = sqLiteDatabase.insert(TASK_TABLE, null, contentValues);
@@ -49,16 +52,36 @@ public class SQLiteHelper extends SQLiteOpenHelper {
     @SuppressLint("Recycle")
     public List<Task> getAllTasks() {
         SQLiteDatabase sqLiteDatabase = getReadableDatabase();
-        Cursor result = sqLiteDatabase.rawQuery("SELECT * FROM "+ TASK_TABLE, null);
+        Cursor result = sqLiteDatabase.rawQuery("SELECT * FROM "+ TASK_TABLE + " WHERE 1 ORDER BY `id` DESC", null);
         List<Task> tasks = new ArrayList<>();
         if (result.moveToFirst()) {
-            Task task = new Task();
-            task.setId(result.getInt(0));
-            task.setTitle(result.getString(1));
-            task.setCompleted(result.getInt(2) == 1);
-            tasks.add(task);
+            do {
+                Task task = new Task();
+                task.setId(result.getInt(0));
+                task.setTitle(result.getString(1));
+                task.setCompleted(result.getInt(2) == 1);
+                tasks.add(task);
+            }while (result.moveToNext());
         }
+
         sqLiteDatabase.close();
         return tasks;
+    }
+
+    public int deleteTask(Task task) {
+        SQLiteDatabase sqLiteDatabase = getWritableDatabase();
+        int result = sqLiteDatabase.delete(TASK_TABLE, "id = ?", new String[] {String.valueOf(task.getId())});
+        sqLiteDatabase.close();
+        return result;
+    }
+
+    public void deleteAllTasks() {
+        try {
+            SQLiteDatabase sqLiteDatabase = getWritableDatabase();
+            sqLiteDatabase.execSQL("DELETE FROM "+TASK_TABLE);
+            sqLiteDatabase.close();
+        }catch (SQLiteException e) {
+            Log.e(TAG, "deleteAllTasks: Error On Delete All Tasks!");
+        }
     }
 }

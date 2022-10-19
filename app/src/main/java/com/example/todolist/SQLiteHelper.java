@@ -41,7 +41,7 @@ public class SQLiteHelper extends SQLiteOpenHelper {
         }
     }
 
-    public Task addNewTask(Task task) {
+    public long addNewTask(Task task) {
         SQLiteDatabase sqLiteDatabase = getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.put("title", task.getTitle());
@@ -49,14 +49,7 @@ public class SQLiteHelper extends SQLiteOpenHelper {
         contentValues.put("last_update", task.getLast_update());
         long result = sqLiteDatabase.insert(TASK_TABLE, null, contentValues);
         sqLiteDatabase.close();
-        if (result > 0) {
-            task.setId((int) result);
-            return task;
-        }else {
-            Task emptyTask = new Task();
-            emptyTask.setId(0);
-            return emptyTask;
-        }
+        return result;
     }
 
     @SuppressLint("Recycle")

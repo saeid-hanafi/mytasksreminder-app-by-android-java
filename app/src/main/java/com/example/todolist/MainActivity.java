@@ -11,7 +11,6 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements
@@ -20,7 +19,7 @@ public class MainActivity extends AppCompatActivity implements
         DialogConfirm.dialogConfirmEventListener{
 
     private TaskAdapter taskAdapter;
-    private SQLiteHelper sqLiteHelper;
+    private TasksDao tasksDao;
     private RecyclerView recyclerView;
 
     @Override
@@ -28,13 +27,14 @@ public class MainActivity extends AppCompatActivity implements
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         taskAdapter = new TaskAdapter(MainActivity.this);
-        sqLiteHelper = new SQLiteHelper(this);
 
         recyclerView = findViewById(R.id.rv_main);
         recyclerView.setLayoutManager(new LinearLayoutManager(MainActivity.this, RecyclerView.VERTICAL, false));
         recyclerView.setAdapter(taskAdapter);
 
-        List<Task> tasks = sqLiteHelper.getAllTasks();
+        tasksDao = TasksDatabase.getTasksDatabase(this).getTasksDao();
+
+        List<Task> tasks = tasksDao.getAll();
         if (tasks != null) {
             taskAdapter.addAllTasks(tasks);
         }
@@ -70,10 +70,10 @@ public class MainActivity extends AppCompatActivity implements
                 List<Task> taskList;
                 if (s.length() > 0) {
                     searchIcon.setVisibility(View.INVISIBLE);
-                    taskList = sqLiteHelper.searchTask(s.toString());
+                    taskList = tasksDao.search(s.toString());
                 }else{
                     searchIcon.setVisibility(View.VISIBLE);
-                    taskList = sqLiteHelper.getAllTasks();
+                    taskList = tasksDao.getAll();
                 }
                 taskAdapter.setSearchResult(taskList);
             }
@@ -87,16 +87,17 @@ public class MainActivity extends AppCompatActivity implements
 
     @Override
     public void addNewTaskSuccess(Task task) {
-        Task result = sqLiteHelper.addNewTask(task);
-        if (result.getId() > 0) {
-            taskAdapter.addNewTask(result);
+        long result = tasksDao.add(task);
+        if (result > 0) {
+            task.setId((int) result);
+            taskAdapter.addNewTask(task);
             recyclerView.smoothScrollToPosition(0);
         }
     }
 
     @Override
     public void editTaskSuccess(Task task) {
-        int result = sqLiteHelper.updateTask(task);
+        int result = tasksDao.update(task);
         if (result > 0) {
             taskAdapter.updateTask(task);
         }
@@ -122,18 +123,18 @@ public class MainActivity extends AppCompatActivity implements
 
     @Override
     public void changeCheckedStatus(Task task) {
-        sqLiteHelper.updateTask(task);
+        tasksDao.update(task);
     }
 
     @Override
     public void deleteAllListener() {
-        sqLiteHelper.deleteAllTasks();
+        tasksDao.deleteAll();
         taskAdapter.deleteAllTasks();
     }
 
     @Override
     public void deleteSingleListener(Task task) {
-        int result = sqLiteHelper.deleteTask(task);
+        int result = tasksDao.delete(task);
         if (result > 0) {
             taskAdapter.deleteTask(task);
         }

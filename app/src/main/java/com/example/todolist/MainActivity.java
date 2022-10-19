@@ -14,7 +14,11 @@ import android.widget.ImageView;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity implements DialogItem.addNewDialogCallBack, TaskAdapter.taskAdapterEventListener {
+public class MainActivity extends AppCompatActivity implements
+        DialogItem.addNewDialogCallBack,
+        TaskAdapter.taskAdapterEventListener,
+        DialogConfirm.dialogConfirmEventListener{
+
     private TaskAdapter taskAdapter;
     private SQLiteHelper sqLiteHelper;
     private RecyclerView recyclerView;
@@ -48,8 +52,8 @@ public class MainActivity extends AppCompatActivity implements DialogItem.addNew
         deleteAllTasksBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                sqLiteHelper.deleteAllTasks();
-                taskAdapter.deleteAllTasks();
+                DialogConfirm dialogConfirm = new DialogConfirm(MainActivity.this, false);
+                dialogConfirm.show(getSupportFragmentManager(), null);
             }
         });
 
@@ -100,10 +104,11 @@ public class MainActivity extends AppCompatActivity implements DialogItem.addNew
 
     @Override
     public void deleteTaskByID(Task task) {
-        int result = sqLiteHelper.deleteTask(task);
-        if (result > 0) {
-            taskAdapter.deleteTask(task);
-        }
+        DialogConfirm dialogConfirm = new DialogConfirm(MainActivity.this, true);
+        Bundle bundle = new Bundle();
+        bundle.putParcelable("delTask", task);
+        dialogConfirm.setArguments(bundle);
+        dialogConfirm.show(getSupportFragmentManager(), null);
     }
 
     @Override
@@ -118,5 +123,19 @@ public class MainActivity extends AppCompatActivity implements DialogItem.addNew
     @Override
     public void changeCheckedStatus(Task task) {
         sqLiteHelper.updateTask(task);
+    }
+
+    @Override
+    public void deleteAllListener() {
+        sqLiteHelper.deleteAllTasks();
+        taskAdapter.deleteAllTasks();
+    }
+
+    @Override
+    public void deleteSingleListener(Task task) {
+        int result = sqLiteHelper.deleteTask(task);
+        if (result > 0) {
+            taskAdapter.deleteTask(task);
+        }
     }
 }

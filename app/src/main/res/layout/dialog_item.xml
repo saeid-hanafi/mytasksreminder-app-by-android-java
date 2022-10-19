@@ -43,9 +43,11 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/add_btn"
+        android:textStyle="bold"
         android:textColor="@color/white"
         android:layout_marginTop="8dp"
-        android:textSize="18dp"
-        android:background="@color/blue_200"/>
+        android:textSize="20dp"
+        android:background="@drawable/dialog_cancel_back"
+        app:backgroundTint="@color/green_500"/>
 
 </LinearLayout>

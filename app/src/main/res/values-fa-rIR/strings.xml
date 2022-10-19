@@ -7,4 +7,8 @@
     <string name="add_btn">افزودن</string>
     <string name="edit_btn">ویرایش</string>
     <string name="remove_all">حذف تمام موارد</string>
+    <string name="ask_delete_all">آیا از حذف تمامی موارد مطمئن هستید؟</string>
+    <string name="dialog_ok">بله حتما</string>
+    <string name="dialog_cancel">خیر</string>
+    <string name="ask_single_delete">آیا از حذف این مورد مطمئن هستید؟</string>
 </resources>

@@ -6,4 +6,8 @@
     <string name="add_btn">Add</string>
     <string name="edit_btn">Edit</string>
     <string name="remove_all">Remove All</string>
+    <string name="ask_delete_all">Are you sure you want to delete everything?</string>
+    <string name="dialog_ok">Yes</string>
+    <string name="dialog_cancel">No</string>
+    <string name="ask_single_delete">Are you sure you want to delete this task?</string>
 </resources>

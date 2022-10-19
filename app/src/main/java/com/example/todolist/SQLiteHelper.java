@@ -100,6 +100,7 @@ public class SQLiteHelper extends SQLiteOpenHelper {
         SQLiteDatabase sqLiteDatabase = getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.put("title", newTask.getTitle());
+        contentValues.put("completed", newTask.isCompleted());
         contentValues.put("last_update", newTask.getLast_update());
         int result = sqLiteDatabase.update(TASK_TABLE, contentValues, "id = ?", new String[] {String.valueOf(newTask.getId())});
         sqLiteDatabase.close();

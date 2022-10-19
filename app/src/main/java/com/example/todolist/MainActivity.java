@@ -114,4 +114,9 @@ public class MainActivity extends AppCompatActivity implements DialogItem.addNew
         dialogItem.setArguments(bundle);
         dialogItem.show(getSupportFragmentManager(), null);
     }
+
+    @Override
+    public void changeCheckedStatus(Task task) {
+        sqLiteHelper.updateTask(task);
+    }
 }

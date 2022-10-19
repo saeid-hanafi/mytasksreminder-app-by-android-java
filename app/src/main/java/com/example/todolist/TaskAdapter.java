@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -93,6 +94,8 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TackViewHolder
         }
 
         public void bindContent(Task task) {
+//            checkBox.setOnCheckedChangeListener(null);
+            checkBox.setChecked(task.isCompleted());
             checkBox.setText(task.getTitle());
             lastUpdate.setText(task.getLast_update());
             deleteIcon.setOnClickListener(new View.OnClickListener() {
@@ -109,11 +112,22 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TackViewHolder
                     return false;
                 }
             });
+
+            checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                    if (buttonView.isPressed()) {
+                        task.setCompleted(isChecked);
+                        eventListener.changeCheckedStatus(task);
+                    }
+                }
+            });
         }
     }
 
     public interface taskAdapterEventListener {
         void deleteTaskByID(Task task);
         void editTask(Task task);
+        void changeCheckedStatus(Task task);
     }
 }

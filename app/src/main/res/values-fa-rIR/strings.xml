@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">لیست کارها</string>
+    <string name="add_new_task">افزودن وظیفه جدید</string>
+    <string name="edit_task">ویرایش وظیفه</string>
+    <string name="search_hint">جستجو</string>
+    <string name="add_btn">افزودن</string>
+    <string name="edit_btn">ویرایش</string>
+    <string name="remove_all">حذف تمام موارد</string>
+</resources>

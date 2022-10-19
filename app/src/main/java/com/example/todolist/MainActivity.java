@@ -5,8 +5,13 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
+import android.widget.EditText;
+import android.widget.ImageView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements DialogItem.addNewDialogCallBack, TaskAdapter.taskAdapterEventListener {
@@ -45,6 +50,33 @@ public class MainActivity extends AppCompatActivity implements DialogItem.addNew
             public void onClick(View v) {
                 sqLiteHelper.deleteAllTasks();
                 taskAdapter.deleteAllTasks();
+            }
+        });
+
+        ImageView searchIcon = findViewById(R.id.iv_search_icon);
+        EditText etSearch = findViewById(R.id.et_search_input);
+        etSearch.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                List<Task> taskList;
+                if (s.length() > 0) {
+                    searchIcon.setVisibility(View.INVISIBLE);
+                    taskList = sqLiteHelper.searchTask(s.toString());
+                }else{
+                    searchIcon.setVisibility(View.VISIBLE);
+                    taskList = sqLiteHelper.getAllTasks();
+                }
+                taskAdapter.setSearchResult(taskList);
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
             }
         });
     }

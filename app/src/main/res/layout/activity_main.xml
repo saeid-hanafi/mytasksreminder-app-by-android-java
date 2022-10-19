@@ -52,15 +52,18 @@
             android:paddingVertical="8dp">
 
             <EditText
+                android:id="@+id/et_search_input"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:paddingVertical="8dp"
                 android:paddingStart="12dp"
+                android:paddingEnd="12dp"
                 android:layout_gravity="center_vertical"
                 android:background="@drawable/back_search_input"
                 android:hint="@string/search_hint"/>
 
             <ImageView
+                android:id="@+id/iv_search_icon"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 app:srcCompat="@drawable/ic_baseline_search_24"

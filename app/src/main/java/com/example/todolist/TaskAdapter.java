@@ -69,6 +69,12 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TackViewHolder
         }
     }
 
+    @SuppressLint("NotifyDataSetChanged")
+    public void setSearchResult(List<Task> tasks) {
+        this.tasks = tasks;
+        notifyDataSetChanged();
+    }
+
     @Override
     public int getItemCount() {
         return tasks.size();

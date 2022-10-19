@@ -105,4 +105,22 @@ public class SQLiteHelper extends SQLiteOpenHelper {
         sqLiteDatabase.close();
         return result;
     }
+
+    public List<Task> searchTask(String title) {
+        SQLiteDatabase sqLiteDatabase = getReadableDatabase();
+        Cursor cursor = sqLiteDatabase.rawQuery("SELECT * FROM "+TASK_TABLE+" WHERE `title` LIKE '%"+title+"%' ORDER BY `last_update` DESC", null);
+        List<Task> tasks = new ArrayList<>();
+        if (cursor.moveToFirst()) {
+            do {
+                Task task = new Task();
+                task.setId(cursor.getInt(0));
+                task.setTitle(cursor.getString(1));
+                task.setCompleted(cursor.getInt(2) == 1);
+                task.setLast_update(cursor.getString(3));
+                tasks.add(task);
+            }while (cursor.moveToNext());
+        }
+        sqLiteDatabase.close();
+        return tasks;
+    }
 }

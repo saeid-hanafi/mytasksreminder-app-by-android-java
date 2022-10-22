@@ -23,7 +23,7 @@
             android:text="@string/ask_delete_all"
             android:textAlignment="center"
             android:textColor="@color/red_700"
-            android:textSize="20dp"
+            android:textSize="20sp"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -47,7 +47,7 @@
                 android:paddingVertical="4dp"
                 android:text="@string/dialog_ok"
                 android:textColor="@color/white"
-                android:textSize="16dp"
+                android:textSize="16sp"
                 android:textStyle="bold"
                 app:backgroundTint="@color/red_700" />
 
@@ -62,7 +62,7 @@
                 android:paddingVertical="4dp"
                 android:text="@string/dialog_cancel"
                 android:textColor="@color/white"
-                android:textSize="16dp"
+                android:textSize="16sp"
                 android:textStyle="bold"
                 app:backgroundTint="@color/green_500" />
 

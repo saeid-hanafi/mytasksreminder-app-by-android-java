@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 
@@ -48,7 +49,7 @@ public class MainActivity extends AppCompatActivity implements
             }
         });
 
-        View deleteAllTasksBtn = findViewById(R.id.remove_all_tasks_btn);
+        ImageView deleteAllTasksBtn = (ImageView) findViewById(R.id.remove_all_tasks_btn);
         deleteAllTasksBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

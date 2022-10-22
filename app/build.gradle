@@ -3,13 +3,21 @@ plugins {
 }
 
 android {
+    signingConfigs {
+        release {
+            storeFile file('/home/shanafi/AndroidStudioProjects/ToDoList/todolist.jks')
+            storePassword STORE_PASS
+            keyAlias STORE_KEY
+            keyPassword KEY_PASS
+        }
+    }
     namespace 'com.example.todolist'
-    compileSdk 32
+    compileSdk 33
 
     defaultConfig {
         applicationId "com.example.todolist"
         minSdk 22
-        targetSdk 32
+        targetSdk 33
         vectorDrawables.useSupportLibrary true
         versionCode 1
         versionName "1.0"
@@ -22,6 +30,7 @@ android {
             minifyEnabled true
             shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.release
         }
     }
     compileOptions {

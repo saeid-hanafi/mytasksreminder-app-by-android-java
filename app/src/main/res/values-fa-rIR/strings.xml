@@ -11,4 +11,9 @@
     <string name="dialog_ok">بله حتما</string>
     <string name="dialog_cancel">خیر</string>
     <string name="ask_single_delete">آیا از حذف این مورد مطمئن هستید؟</string>
+    <string name="search_icon_des">آیکون جستجو</string>
+    <string name="add_new_task_des">افزودن وظیفه جدید</string>
+    <string name="delete_all_des">حذف تمامی وظایف</string>
+    <string name="task_title_hint">عنوان</string>
+    <string name="delete_single_task_des">حذف وظیفه</string>
 </resources>

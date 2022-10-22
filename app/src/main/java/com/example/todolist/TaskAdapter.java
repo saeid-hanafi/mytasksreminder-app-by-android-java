@@ -89,7 +89,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TackViewHolder
         public TackViewHolder(@NonNull View itemView) {
             super(itemView);
             checkBox = itemView.findViewById(R.id.cb_task);
-            deleteIcon = itemView.findViewById(R.id.iv_delete_icon);
+            deleteIcon = (ImageView) itemView.findViewById(R.id.iv_delete_icon);
             lastUpdate = itemView.findViewById(R.id.tv_last_timestamp);
         }
 

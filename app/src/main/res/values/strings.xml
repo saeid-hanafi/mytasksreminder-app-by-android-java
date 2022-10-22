@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">To Do List</string>
+    <string name="app_name">To Do List 2</string>
     <string name="add_new_task">Add New Tack</string>
     <string name="edit_task">Edit Task</string>
     <string name="search_hint">Search</string>
@@ -10,4 +10,9 @@
     <string name="dialog_ok">Yes</string>
     <string name="dialog_cancel">No</string>
     <string name="ask_single_delete">Are you sure you want to delete this task?</string>
+    <string name="search_icon_des">Search Icon</string>
+    <string name="add_new_task_des">Add New Task</string>
+    <string name="delete_all_des">Delete All Tasks</string>
+    <string name="task_title_hint">Title</string>
+    <string name="delete_single_task_des">Delete Single Task</string>
 </resources>
